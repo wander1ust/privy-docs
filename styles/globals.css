@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Pangolin&display=swap");
+
+:root {
+  --font-title: Pangolin;
+  --text-large: 4rem;
+  --color-primary-dk: hotpink;
+  --color-primary-lt: rgb(247, 206, 227);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font-size: 1.2rem;
+  font-weight: 900;
+  display: block;
+  background-color: pink;
+  border: 2px solid hotpink;
+  border-radius: 0.5em;
+  padding: .3em .5em;
+  font-family: Pangolin, Arial, sans-serif;
+}
+button:hover {
+  cursor: pointer;
+  /* cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦊</text></svg>") 16 0,auto; */
+   /*!emojicursor.app*/
+}
+.textGradientPink {
+  color: #fff;
+  /*   background: linear-gradient(to right, lightpink 0%, hotpink); */
+  background-image: radial-gradient(lightpink, hotpink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}

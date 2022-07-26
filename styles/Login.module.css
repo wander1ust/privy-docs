@@ -1,0 +1,92 @@
+/* html, body {
+    background: url('https://images.unsplash.com/photo-1563291074-2bf8677ac0e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cGluayUyMGJhY2tncm91bmR8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60');
+    background-size: cover;
+} */
+.wrapper {
+    /* background-color: pink; */
+    /* margin-top: 5rem; */
+    height: 44.5rem;
+    width: 100%;
+    background-color: black;
+    /* background: url('https://images.unsplash.com/photo-1563291074-2bf8677ac0e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cGluayUyMGJhY2tncm91bmR8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'); */
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    /* cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦊</text></svg>") 16 0,auto;  */
+    /*!emojicursor.app*/
+    /* 🌷 */
+}
+.bgCover {
+    height: auto;
+    width: 100%;
+    background-color: #fff;
+    opacity: 0.3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* height: auto; */
+}
+.loginBtn {
+    margin: 8rem auto;
+    vertical-align: middle;
+    position: relative;
+    box-shadow: 3px 5px #888;
+    padding: .8em;
+    font-size: 1.5rem;
+}
+.loginBtn:hover {
+    /* Created with https://www.css-gradient.com */
+    background: #E997EF;
+    background: -webkit-linear-gradient(top left, #fff, #E997EF);
+    background: -moz-linear-gradient(top left, #fff, #E997EF);
+    background: linear-gradient(to bottom right, #fff, #E997EF);  
+    animation: fadeIn 1s;  
+}
+
+.metaMaskIcon {
+    /* margin-top: 5px; */
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 0.7rem;
+    width: 3.5rem;
+    /* position: absolute; */
+}
+
+.title {
+    color: var(--color-primary-lt);
+    font-size: var(--text-large);
+    font-family: var(--font-title);
+    text-align: center;
+    /* Created with https://www.css-gradient.com */
+    /* background: #E997EF;
+    background: -webkit-linear-gradient(top left, #E997EF, #F2B3E5);
+    background: -moz-linear-gradient(top left, #E997EF, #F2B3E5);
+    background: linear-gradient(to bottom right, #E997EF, #F2B3E5);     */
+}
+
+.textGradientPink {
+    color: #fff;
+    /*   background: linear-gradient(to right, lightpink 0%, hotpink); */
+    background-image: radial-gradient(lightpink, hotpink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Animate */
+  .animate-fade-in {
+    animation: fadeIn 12s;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0.5;
+      /* transform: translatex(0px) translatey(0px) */
+    }
+    
+    100% {
+      opacity: 1;
+      /* transform: translatex(10px) translatey(-10px); */
+    }
+}
+ 
