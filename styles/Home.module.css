@@ -1,16 +1,6 @@
 .container {
   padding: 0 2rem;
-  margin-top: -13em;
-}
-
-.main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* margin-top: -17em; */
 }
 
 .footer {
@@ -40,16 +30,6 @@
   text-decoration: underline;
 }
 
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 2.5rem;
-  font-family: Marker Felt;
-  letter-spacing: 0.05rem;
-  padding-bottom: 2rem;
-  color: rgb(244, 28, 136);
-}
-
 .title,
 .description {
   text-align: center;
@@ -76,6 +56,7 @@
   justify-content: center;
   flex-wrap: wrap;
   max-width: 800px;
+  margin-top: -20rem;
 }
 
 .card {
@@ -121,6 +102,10 @@ button.inlineBtn {
 
 button.saveNote {
   margin-top: 5rem;
+}
+
+.docThumbnail {
+  border: 1px solid pink;
 }
 
 @media (max-width: 600px) {

@@ -1,0 +1,34 @@
+.editor {
+    height: 450px;
+    width: 100%;
+    /* border: 2px solid rgb(146, 221, 248); */
+    border: 2px solid pink;
+    margin-top: -18rem;
+    overflow: hidden;
+    position: relative;
+}
+
+#docForm {
+    display: inline-block;
+    width:70%;
+    text-align: center;
+    margin: 0 auto;
+    /* position: relative; */
+  }
+  
+  .docTitle {
+    /* display: inline-block; */
+    position: absolute;
+    top: 7rem;
+    text-align: center;
+    margin: 0 auto;
+    width: 20rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color:royalblue;
+    /* box-shadow: 
+    inset 0 1px 4px rgba(0,0,0,0.4);
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; */
+    /* padding: 5px; */
+  }

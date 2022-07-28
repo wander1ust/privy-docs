@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { useRouter } from "next/router";
 import { PrivyClient, SiweSession } from "@privy-io/privy-browser";
 import { PRIVY_API_KEY } from "../config";
+// import styles from '../styles/Layout.module.css'
 
 export function isMetaMaskEnabled() {
   return !!(
@@ -62,9 +63,9 @@ class Session {
    * A cached reference to the user's connected wallet address.
    */
   get address() {
-    if (this._address === null) {
-      throw new Error("Attempt to reference address when null");
-    }
+    // if (this._address === null) {
+    //   throw new Error("Attempt to reference address when null");
+    // }
 
     return this._address;
   }
@@ -132,20 +133,12 @@ export function useSession() {
   return useContext(SessionContext);
 }
 
-const btnContainerStyle = {
-  // clear: 'both'
-}
-const wrapperStyle = {
-  // height: '50px',
-  
-}
-
 const logoutBtnStyle = {
   display: 'block',
   float: 'right',
   position: 'absolute',
   right: '5rem',
-  top: '3.5rem',
+  top: '2rem' /*'3.5rem',*/
   // bottom: '5rem',
   // lineHeight: '30px'
 }
@@ -158,20 +151,18 @@ export function SignOutLink() {
   const session = useSession();
 
   return (
-    <div style={wrapperStyle}>
-      <div style={btnContainerStyle}>
-        <button id='logout' style={logoutBtnStyle}>
-          <a
-            href="/logout"
-            onClick={(e) => {
-              e.preventDefault();
-              session.destroy().then(() => router.push("/login"));
-            }}
-          >
-            Log out
-          </a>
-        </button>
-        </div>
-    </div>
+      <>
+          <button id='logout' style={logoutBtnStyle}>
+            <a
+              href="/logout"
+              onClick={(e) => {
+                e.preventDefault();
+                session.destroy().then(() => router.push("/login"));
+              }}
+            >
+              Log out
+            </a>
+          </button>
+      </>
   );
 }

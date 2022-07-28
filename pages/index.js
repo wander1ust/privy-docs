@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import { useRouter } from "next/router";
 import { useSession, SignOutLink } from "../components/Session"
+// import { useDocTitle } from "../components/Editor"
+import Layout from "../components/Layout"
+// import { useDocTitle, DocTitleContext } from "./edit/doc"
 import { EditorState } from 'draft-js';
 import { connectToWallet, disconnectWallet, destroy, init } from './metamask-login.jsx';
-
-const SimpleEditor = dynamic(() => import( '../components/Editor.jsx' ), { ssr: false } );
 
 export default function Home() {
     const router = useRouter();
@@ -16,105 +17,158 @@ export default function Home() {
     const [address, setAddress] = useState(null);
     // const [session, setSession] = useState(null);
     const [client, setClient] = useState(null);
-    const [note, setNote] = useState('');
+    // const [note, setNote] = useState('');
     const [doc, setDoc] = useState('');
+    const [docs, setDocs] = useState('');
+    const [title, setTitle] = useState("Untitled Doc");
     const [msg, setMsg] = useState('');
     const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
     const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
-    // const handleBtnClick = () => {
-    //   return;
-    // }
-
-  // Store note in Privy
-  const saveNote = async () => {
-  // if (!address) {alert('Connect your wallet to create and edit notes.');}
-  console.log('pud address:' + session.address);  // null
-  const [htmlNote] = await session.privy.put(session.address, [
-    {
-      field: "html-note",
-      value: note ? note.toString() : ''
-      // value: 'Nothing here.'
+    // ToDo: Refactor routes
+    const linkToDocs = () => {
+      router.push('/docs');
+    }   
+    const linktoEditor = () => {
+      router.push('/edit/doc');
     }
-  ])
-  setMsg('Note saved!');
-  // .then(() => {console.log(address)});
-  // console.log('Note save');
+
+   // Check if doc already exists (look up ID)
+  
+  // Create a new doc. Add to Privy docs
+  // let newDoc = {
+  //   "id": 1,
+  //   "body": doc.toString()
+  // };  
+  const handleCreateDoc = async (e) => {
+      linktoEditor();
+  }
+  
+    // Store note in Privy
+  const handleSaveDoc = async (e) => {
+  // if (!address) {alert('Connect your wallet to create and edit notes.');}
+  try {
+      // e.preventDefault();
+      console.log('pud address:' + session.address);  // null
+      const [htmlDocs] = await session.privy.put(session.address, [
+        {
+          field: 'docs', // json (arr of doc objects)
+          value: JSON.stringify(generateDocsJson())
+          // value: generateDocsJson()
+          // value: JSON.stringify( [{
+          //   body: doc
+          // }])
+          // value: ''
+        }
+      ])
+      setMsg('Doc saved!');
+      // setDocs(htmlDocs);
+      // .then(() => {console.log(address)});
+      setDocs(htmlDocs?.text());
+      console.log(htmlDocs?.text());      
+    } catch(e) {
+      console.log(e);
+    }
   };
 
-  const deleteNote = async () => {
-    return;
+  const isDocsEmpty = docs.length == 0;
+
+  // [{"body":"<p>c</p>\n"}]
+  const generateDocsJson = () => {
+    let arr = [];
+    let docToSave = {
+      "id": 1,
+      "title": title,
+      "body": doc.toString()
+    };  
+    let res = new Array(docToSave);
+    // console.log(docs.length); // string, 0 length
+      if (!isDocsEmpty) {          
+          const savedDocs = JSON.parse(docs);
+          docToSave.id = savedDocs.length + 1
+          res = [...savedDocs, docToSave];
+          // res = savedDocs.push(docToSave);
+    }
+    return res;
   }
 
+  // Temp
+  const handleDeleteDoc = async () => {
+    // const [htmlNote] = await session.privy.put(session.address, [
+    //   {
+    //     field: "html-note",
+    //     value: ""
+    //   }
+    // ])
+}
+
   useEffect(() => {
-    // if (!session.address) {
-    //   connectToWallet(session, setAddress);
-    // }
-    if (!session.siwe.token || !session.address) {
+    if (!session.siwe.token || !session.address) {      
       router.push('/login');
     }
-    console.log(session);
+    setAddress(address);
+    console.log(doc);
+    console.log(title);
+    // console.log(useContext(DocTitleContext));
 }, []);
 
-  // Update address if page is refreshed.
-  // const updateAddress = async () => {
-  //   const address = await session.address();
-  //   setAddress(address);
-  // };
-  // useEffect(() => {
-  //     init(PrivyClient, SiweSession, setSession).then(() => {updateAddress});
-  // }, []);
+    async function getDocsFromPrivy() {
+        try {
+          const htmlDocs = await session.privy.get(
+                  session.address, // null - why?
+                  "docs"
+                );
+                setDocs(htmlDocs?.text());
+              //  setDocs(htmlDocs !== null ? htmlDocs.text() : 'N/A');
+              // console.log('address: ' + session.address);
+              console.log('getDocsFromPrivy: ' + (htmlDocs !== null ? htmlDocs.text() : 'null'));
+              // console.log(`doc: ${doc}`);
+              // console.log(`doc: ${JSON.stringify(htmlNote)}`);
+        } catch (error) {
+          console.log(error);
+        }
+    }
+  //   getDocFromPrivy();
+  // }, [session]);
 
-  // Get user data from Privy.
-  const getUserData = async () => {
-      try {
-        if (!session.address) return;
+    useEffect(() => {
+      getDocsFromPrivy();
+    }, [session, docs]);
 
-        // Fetch user's note from Privy
-        const [note] = await session.privy.get(
-          session.address,
-          ["html-note"]
-        );
-        console.log(note);
+    function htmlStringToHTML(htmlString) {
+      var div = document.createElement('div');
+      div.innerHTML = htmlString.trim();
+    
+      // Change this to div.childNodes to support multiple top-level nodes.
+      return div.childNodes;
+    }
 
-      } catch (error) {
-        console.error(error);
-      }
-  };
-
-  // Get the user data from Privy whenever the wallet address is set.
-  useEffect(() => {
-      async () => {
-          const doc = await getUserData().then((note) => {console.log(note)});
-          setDoc(doc);
-          console.log(doc);
-        // getUserData().then((note) => {console.log(note)});
-      }
-  }, [address]);
-
-  // Show note as it is updated
-  useEffect(() => {
-      if (!note) return;
-      console.log(`New note: ${note}`);
-      // document.body.style = `background: ${favoriteColor};`;
-  }, [note]);
+  /* [{"body":"<p>c</p>\n"},{"body":"<p>a</p>\n"},{"body":"<p>w</p>\n"},{"id":1,"body":"<p>w</p>\n"},{"id":1,"body":"<p>w</p>\n"},{"id":126,"body":"<p>w</p>\n"},{"id":7,"body":"<p>w</p>\n"}] */
+  const showDocs = () => {
+    if (!docs) return;
+    return JSON.parse(docs).map((doc , i)=> {
+      return (
+        // <div className={styles.grid}>
+          <a href='' className={styles.card}>
+          <h2>{doc.title ? doc.title : `Doc ${i+1}`}</h2>
+            {doc.body}
+           {/* <p>{htmlStringToHTML(doc.body).toString}</p> */}
+            </a>
+    )
+  }) }  
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Privy Docs</title>
-        <meta name="description" content="Generated by create next app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
+    <Layout>
+    <div className={styles.container}>      
+      {/* <main className={styles.main}>
         <h1 className={styles.title}>
           Privy &middot; Docs
-        </h1>
+        </h1> */}
+      <div className={styles.grid}>
+        {showDocs()}
+      </div>
 
         <SignOutLink />
-
-        <SimpleEditor style={{clear: 'both'}} note={note} setNote={setNote} editorState={editorState} setEditorState={setEditorState} />
 
         {/* <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -145,33 +199,36 @@ export default function Home() {
             </p>
           </a>
         </div> */}
-      </main>
+      {/* </main> */}
 
-      {/* onClick={() => {address ? putUserData : alert('Connect your wallet to create and edit notes.')}} */}
-      {/* <Login setAddress={setAddress} /> */}
-      {/* () => {connectToWallet; handleBtnClick();} */}
       <footer className={styles.footer}>
-      {/* <button onClick={() => {connectToWallet(session, setAddress)}}>Connect Wallet</button> */}
-      {/* <button onClick={() => {disconnectWallet(session, setAddress, useSession, destroy)}}>Log out</button> */}
-      
-      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={saveNote}>
-              <strong>💾 </strong>&nbsp; Save Note
-            </button>      &nbsp;&nbsp;&nbsp;
-      <button className={Object.assign({}, styles.button, styles.inlineBtn)} onClick={deleteNote}>
-              <strong>🗑 </strong>&nbsp; Delete Note
-            </button>
-        <h5>{msg}</h5>
-        {/* <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a> */}
+
+          <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={linktoEditor}>
+                  <strong>📗 </strong> Go to Editor
+                </button>      &nbsp;&nbsp;&nbsp;        
+                
+                 <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={handleCreateDoc}>
+                  <strong>➕ </strong> New Doc
+                </button>      &nbsp;&nbsp;&nbsp;
+          {/* <button className={Object.assign({}, styles.button, styles.inlineBtn)} onClick={handleDeleteDoc}>
+                  <strong>🗑 </strong>&nbsp; Delete Doc
+                </button>      &nbsp;&nbsp;&nbsp;           */}
+          {/* <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={linkToDocs}>
+            <strong>💾 </strong>&nbsp; View Docs
+          </button>   */}
+            <h5>{msg}</h5>
+            {/* <a
+              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Powered by{' '}
+              <span className={styles.logo}>
+                <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+              </span>
+            </a> */}
       </footer>
     </div>
+    </Layout>
   )
 }
