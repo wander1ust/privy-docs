@@ -16,10 +16,7 @@ export default function Home() {
     const router = useRouter();
     const session = useSession();
     const [address, setAddress] = useState(null);
-    // const [session, setSession] = useState(null);
-    // const [client, setClient] = useState(null);
     const [view, setView] = useState(null);
-    // const [note, setNote] = useState('');
     const [docId, setDocId] = useState('');
     const [doc, setDoc] = useState('');
     const [docs, setDocs] = useState('');
@@ -36,13 +33,6 @@ export default function Home() {
       router.push('/edit/doc');
     }
 
-   // Check if doc already exists (look up ID)
-  
-  // Create a new doc. Add to Privy docs
-  // let newDoc = {
-  //   "id": 1,
-  //   "body": doc.toString()
-  // };  
   /* Event handlers */
   const onCreateDoc = async (e) => {
       linktoEditor();
@@ -80,64 +70,6 @@ export default function Home() {
      const copySharedDocs = await session.privy.put(session.address, 'docs', docs);
      console.log(copySharedDocs);
   }
-  
-    // Store note in Privy
-  // const handleSaveDoc = async (e) => {
-  // // if (!address) {alert('Connect your wallet to create and edit notes.');}
-  // try {
-  //     // e.preventDefault();
-  //     console.log('pud address:' + session.address);  // null
-  //     const [htmlDocs] = await session.privy.put(session.address, [
-  //       {
-  //         field: 'docs', // json (arr of doc objects)
-  //         value: JSON.stringify(generateDocsJson())
-  //         // value: generateDocsJson()
-  //         // value: JSON.stringify( [{
-  //         //   body: doc
-  //         // }])
-  //         // value: ''
-  //       }
-  //     ])
-  //     setMsg('Doc saved!');
-  //     // setDocs(htmlDocs);
-  //     // .then(() => {console.log(address)});
-  //     setDocs(htmlDocs?.text());
-  //     console.log(htmlDocs?.text());      
-  //   } catch(e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // const isDocsEmpty = docs?.length == 0;
-
-  // // [{"body":"<p>c</p>\n"}]
-  // const generateDocsJson = () => {
-  //   let arr = [];
-  //   let docToSave = {
-  //     "id": 1,
-  //     "title": title,
-  //     "body": doc.toString()
-  //   };  
-  //   let res = new Array(docToSave);
-  //   // console.log(docs.length); // string, 0 length
-  //     if (!isDocsEmpty) {          
-  //         const savedDocs = JSON.parse(docs);
-  //         docToSave.id = savedDocs.length + 1
-  //         res = [...savedDocs, docToSave];
-  //         // res = savedDocs.push(docToSave);
-  //   }
-  //   return res;
-  // }
-
-//   // Temp
-//   const handleDeleteDoc = async () => {
-//     // const [htmlNote] = await session.privy.put(session.address, [
-//     //   {
-//     //     field: "html-note",
-//     //     value: ""
-//     //   }
-//     // ])
-// }
 
 // Reset docs for testing
 const test = async () => {
@@ -167,19 +99,14 @@ const test = async () => {
                   "docs"
                 );
                 setDocs(htmlDocs?.text());
-              //  setDocs(htmlDocs !== null ? htmlDocs.text() : 'N/A');
-              // console.log('address: ' + session.address);
+
               console.log('getDocsFromPrivy: ' + (htmlDocs !== null ? htmlDocs.text() : 'null'));
               localStorage.setItem('docs', htmlDocs);
               console.log(`Local storage docs: ${localStorage.getItem(docs)}`);
-              // console.log(`doc: ${doc}`);
-              // console.log(`doc: ${JSON.stringify(htmlNote)}`);
         } catch (error) {
           console.log(error);
         }
     }
-  //   getDocFromPrivy();
-  // }, [session]);
 
     useEffect(() => {
       getDocsFromPrivy();
@@ -200,25 +127,20 @@ const test = async () => {
         // return str.replace(/blue/g, "red");
     }
 
-  /* [{"body":"<p>c</p>\n"},{"body":"<p>a</p>\n"},{"body":"<p>w</p>\n"},{"id":1,"body":"<p>w</p>\n"},{"id":1,"body":"<p>w</p>\n"},{"id":126,"body":"<p>w</p>\n"},{"id":7,"body":"<p>w</p>\n"}] */
+
   const showDocs = () => {
     if (!docs) return;
     // ToDo: Check if docs is JSON
     // if (!Array.isArray(docs)) return;
     return JSON.parse(docs).map((doc , i)=> {
       return (
-        // <div className={styles.grid}>
-        // `edit/doc?id=${i+1}`
-          // <a href={`edit/doc/${i+1}?token=${session.siwe.token}&htmlDoc=${JSON.stringify(JSON.parse(docs))}`} className={styles.card} target='_blank'>
-          /* <a href={`edit/doc/${i+1}?myDocs=${replaceDoubleQuotesWithSingle(JSON.stringify(JSON.parse(docs)[i]))}`} className={styles.card} target='_blank'> */
-          /* <a href={`edit/doc/${i+1}?myDocs=${replaceChar(JSON.stringify(JSON.parse(docs)[i])), /&nbsp;/gi, 'ok'}`} className={styles.card} target='_blank'> */
             <>
                 <a href={`edit/doc/${i+1}?myDocs=${JSON.stringify(JSON.parse(docs)[i].body)}`} className={styles.card} target='_blank'>
                 {/* <a href={`edit/doc/${i+1}?myDocs=${docs}`} className={styles.card} target='_blank'> */}
               <h2>{doc.title.toLowerCase() !== 'untitled' ? doc.title : `Doc ${i+1}`} </h2>
              
                 {doc.body}
-                {/* <p>{htmlStringToHTML(doc.body).toString}</p> */}
+
                 </a>
                 <a className={styles.deleteDoc} onClick={(e) => {onDeleteDoc(e, {i})}}><span className={styles.deleteIcon}>🗑</span></a>
                 </>
@@ -227,52 +149,12 @@ const test = async () => {
 
   return (
     <Layout>
-      {/* <div className={styles.wrapper}> */}
-       {/* <img className={styles.backgroundImg} src='../public/imgs/pink-dark.jpg' /> */}
-    <div className={styles.container}>      
-      {/* <main className={styles.main}>
-        <h1 className={styles.title}>
-          Privy &middot; Docs
-        </h1> */}
-      <div className={styles.grid}>
+       <div className={styles.container}>      
+       <div className={styles.grid}>
         {showDocs()}
-      </div>
-
-       
-
-        {/* <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div> */}
-      {/* </main> */}
+       </div>
 
       <footer className={styles.footer}>
-
           <button className={Object.assign({}, styles.button, styles.menuBtn, styles.saveNote)} onClick={onDeleteDocs}>
                   <strong>📗 </strong> Delete Docs
                 </button>      &nbsp;&nbsp;&nbsp;     
@@ -287,34 +169,11 @@ const test = async () => {
                   <strong>➕ </strong> Shared with Me
                 </button>      &nbsp;&nbsp;&nbsp;
                 <SignOutButton view={'home'} />
-          {/* <button className={Object.assign({}, styles.button, styles.inlineBtn)} onClick={handleDeleteDoc}>
-                  <strong>🗑 </strong>&nbsp; Delete Doc
-                </button>      &nbsp;&nbsp;&nbsp;           */}
-          {/* <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={linkToDocs}>
-            <strong>💾 </strong>&nbsp; View Docs
-          </button>   */}
           <p></p><br/>
-          
+
             <div><h5 className={styles.msg}>{msg}</h5></div>
-            {/* <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Powered by{' '}
-              <span className={styles.logo}>
-                <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-              </span>
-            </a> */}
       </footer>
     </div>
     </Layout>
   )
 }
-
-// const fs = require('fs')
-
-// export function getStaticProps() {
-//   fs
-//   return { props: { msg: 'hello world' } }
-// }

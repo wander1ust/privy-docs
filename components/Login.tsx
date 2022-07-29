@@ -13,20 +13,16 @@ const Signin = ({ onSubmit, unlocked }) => {
                 {/* <Image className={styles.bgCover} src='/imgs/blue-sky.jpg' alt='blue sky background image' width={1000} height={500} /> */}
                 
                 <h2 className={styles.title}>Privy Docs</h2>
-
-                {/* <button className={Object.assign({}, styles.loginBtn, styles.gradientPink)} */}
-                <button className={styles.loginBtn}
-                    onClick={(e) => {
-                    e.preventDefault();
-                    onSubmit();
-                    }}
-                >
+                    <button className={styles.loginBtn}
+                        onClick={(e) => {
+                        e.preventDefault();
+                        onSubmit();
+                        }}
+                    >
                     <img className={styles.metaMaskIcon} alt='MetaMask icon logo' src='https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png' />
                     Sign in with MetaMask
-                </button>
-                {/* ToDo: Register session token on sign in */}
-                {/* <h5 className={styles.caption}>Privacy. <span>Unlocked.</span></h5> */}
-                <h5 className={styles.caption}><span style={unlocked ?  {} : {color: 'hotpink'}}>Your Privacy.</span> <span>{unlocked ? <span style={{color: 'hotpink'}}>Unlocked.</span> : 'Protected.'}</span></h5>
+                    </button>
+                    <h5 className={styles.caption}><span style={unlocked ?  {} : {color: 'hotpink'}}>Your Privacy.</span> <span>{unlocked ? <span style={{color: 'hotpink'}}>Unlocked.</span> : 'Protected.'}</span></h5>
             </div>
     </div>
     )

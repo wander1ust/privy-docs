@@ -1,0 +1,16 @@
+[
+    {
+        "doc_id": "doc_id",
+        "body": "htmlString",
+        "users": "users[address]",
+       " tags/category": "string",
+        "owners/roles": {{ "address1": "role1", "address2": "role2" }}
+    },
+    {
+        "doc_id": "doc_id",
+        "body": "htmlString",
+        "users": "users[address]",
+       " tags/category": "string",
+        "owners/roles": {{ "address1": "role1", "address2": "role2" }}
+    },
+]

@@ -6,8 +6,7 @@ import { convertToRaw, EditorState, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import styles from '../styles/Editor.module.css'
 
-const SimpleEditor = ({ doc, setDoc, docs, title, setTitle, editorState, setEditorState, setRawContent }) => {
-    // const [editorState, setEditorState] = useState(EditorState.createEmpty());    
+const SimpleEditor = ({ doc, setDoc, docs, title, setTitle, editorState, setEditorState, setRawContent }) => { 
     const rawContentState = convertToRaw(editorState.getCurrentContent());
     const docTitle = useRef(null);
     console.log(rawContentState);
@@ -36,7 +35,7 @@ const SimpleEditor = ({ doc, setDoc, docs, title, setTitle, editorState, setEdit
             <form id={styles.docForm}>
             <input className={styles.docTitle} type='text' ref={docTitle} onChange={(e) => {setTitle(e.target.value)}} name="docTitle" /*placeholder='Untitled'*/ />
             </form>
-      {/* </DocTitleContext.Provider> */} 
+  
         <Editor 
             // toolbarOnFocus
             editorState={editorState}

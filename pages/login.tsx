@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSession } from "../components/Session";
 import { useRouter } from "next/router";
-// import Layout from "../components/Layout";
 import Login from "../components/Login";
 
 export async function getStaticProps() {
@@ -36,8 +35,7 @@ function SignIn() {
 
   return (
     <>
-    {/* <h2 style={{display: 'absolute'}}>Privy Docs</h2> */}
-    <Login onSubmit={onSubmit} unlocked={unlocked} />
+      <Login onSubmit={onSubmit} unlocked={unlocked} />
     </>
   );
 }

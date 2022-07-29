@@ -1,3 +1,25 @@
+## Demo Video
+<a href='https://rebrand.ly/privy-docs-demo' target='_blank'>
+    <img src='public/imgs/video-thumbnail.png' width='500px' />
+</a>
+
+## About
+
+See **<a href='notes/about.md'>notes/about.md</a>**
+
+## Issues + Roadmap
+
+See **<a href='notes/bugs.md'>notes/bugs.md</a>** <br>
+
+...
+
+App is nowhere near done! <br>
+
+<img src='public/imgs/giphy.gif' width='250px' />
+<p></p><br>
+
+## Installation
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
