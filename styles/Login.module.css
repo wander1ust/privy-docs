@@ -17,6 +17,9 @@
     /*!emojicursor.app*/
     /* 🌷 */
 }
+/* .inner {
+  transform: scale(1.1);
+} */
 .bgCover {
     height: auto;
     width: 100%;
@@ -28,7 +31,7 @@
     /* height: auto; */
 }
 .loginBtn {
-    margin: 8rem auto;
+    margin: 2rem auto;
     vertical-align: middle;
     position: relative;
     box-shadow: 3px 5px #888;
@@ -37,11 +40,23 @@
 }
 .loginBtn:hover {
     /* Created with https://www.css-gradient.com */
-    background: #E997EF;
+    /* background: #E997EF;
     background: -webkit-linear-gradient(top left, #fff, #E997EF);
     background: -moz-linear-gradient(top left, #fff, #E997EF);
-    background: linear-gradient(to bottom right, #fff, #E997EF);  
-    animation: fadeIn 1s;  
+    background: linear-gradient(to bottom right, #fff, #E997EF);   */
+        background: #58ecfc;
+    background: -webkit-linear-gradient(top left, #58ecfc, #eb87f3);
+    background: -moz-linear-gradient(top left, #58ecfc, #eb87f3);
+    background: linear-gradient(to bottom right, #58ecfc, #eb87f3);  
+    /* animation: fadeIn 1s;   */
+}
+.loginBtn {
+    /* Created with https://www.css-gradient.com */
+    background: #58ecfc;
+    background: -webkit-linear-gradient(top left, #6cedfb, #f88ad7);
+    background: -moz-linear-gradient(top left, #6cedfb, #f88ad7);
+    background: linear-gradient(to bottom right, #6cedfb, #f88ad7);  
+    /* animation: fadeIn 1s;   */
 }
 
 .metaMaskIcon {
@@ -53,7 +68,7 @@
     /* position: absolute; */
 }
 
-.title {
+.title, .caption {
     color: var(--color-primary-lt);
     font-size: var(--text-large);
     font-family: var(--font-title);
@@ -63,6 +78,10 @@
     background: -webkit-linear-gradient(top left, #E997EF, #F2B3E5);
     background: -moz-linear-gradient(top left, #E997EF, #F2B3E5);
     background: linear-gradient(to bottom right, #E997EF, #F2B3E5);     */
+}
+.caption {
+  font-size: var(--text-medium);
+  margin-top: -0.5rem;
 }
 
 .textGradientPink {

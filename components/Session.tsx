@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { useRouter } from "next/router";
 import { PrivyClient, SiweSession } from "@privy-io/privy-browser";
 import { PRIVY_API_KEY } from "../config";
-// import styles from '../styles/Layout.module.css'
+import styles from '../styles/Home.module.css';
 
 export function isMetaMaskEnabled() {
   return !!(
@@ -133,34 +133,40 @@ export function useSession() {
   return useContext(SessionContext);
 }
 
-const logoutBtnStyle = {
-  display: 'block',
-  float: 'right',
-  position: 'absolute',
-  right: '5rem',
-  top: '2rem' /*'3.5rem',*/
-  // bottom: '5rem',
-  // lineHeight: '30px'
-}
-
 /**
  * A reusable component for signing out.
  */
-export function SignOutLink() {
+export function SignOutButton({ view }) {
   const router = useRouter();
   const session = useSession();
 
+  const signOutBtnStyle = {
+    display: 'block',
+    float: 'right',
+    position: 'absolute',
+    right: '5rem',
+    top: '2rem' /*'3.5rem',*/
+  }   
+  const positionStyle = {
+    top: '-25rem'
+  } 
+
+  const setPositionStyle = () => {
+    return view !== 'home' ? positionStyle : null;
+  }
+
   return (
       <>
-          <button id='logout' style={logoutBtnStyle}>
+          {/* <button id='sign-out'  className={Object.assign({}, setPositionStyle())}> */}
+          <button id='sign-out' style={signOutBtnStyle}>
             <a
-              href="/logout"
+              href="/signout"
               onClick={(e) => {
                 e.preventDefault();
                 session.destroy().then(() => router.push("/login"));
               }}
             >
-              Log out
+              {session.authenticated ? 'Sign out' : 'Sign in'}
             </a>
           </button>
       </>

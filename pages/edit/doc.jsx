@@ -5,7 +5,7 @@ import styles from '../../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout"
-import { useSession, SignOutLink } from "../../components/Session"
+import { useSession, SignOutButton } from "../../components/Session"
 import { EditorState } from 'draft-js';
 import { connectToWallet, disconnectWallet, destroy, init } from '../metamask-login.jsx';
 
@@ -26,45 +26,54 @@ export default function Doc() {
     // const [note, setNote] = useState('');
     const [doc, setDoc] = useState('');
     const [docs, setDocs] = useState('');
-    const [title, setTitle] = useState("Untitled Doc");
+    const [title, setTitle] = useState("Untitled");
     const [msg, setMsg] = useState('');
     const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
+    const [rawContent, setRawContent] = useState(null); 
     const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
     const linktoHome = () => {
       router.push('/');
     }
-    const linkToDocs = () => {
-      router.push('/docs');
-    }
+    // const linkToDocs = () => {
+    //   router.push('/docs');
+    // }
 
    // Check if doc already exists (look up ID)
   
   // Store note in Privy
-  const handleSaveDoc = async (e) => {
-  // if (!address) {alert('Connect your wallet to create and edit notes.');}
-  try {
-      // e.preventDefault();
-      console.log('pud address:' + session.address);  // null
-      const [htmlDocs] = await session.privy.put(session.address, [
-        {
-          field: 'docs', // json (arr of doc objects)
-          value: JSON.stringify(generateDocsJson())
-          // value: generateDocsJson()
-          // value: JSON.stringify( [{
-          //   body: doc
-          // }])
-          // value: ''
+  const onShareDoc = async (e) => {
+    await session.privy.addRequestersToRole(reader, [
+      '0x75821Bf2EfC7B6FFcB7DD61ed2d968A21Cc20437',
+      // '<requester_id_2>',
+      // 'etc...',
+    ]);
+  }
+  
+  // Store note in Privy
+  const onSaveDoc = async (e) => {
+      // const [text] = editorState.currentContent.blockMap;  // undefined
+      if (!title) { alert(`Missing title`); }
+      // if (!doc.toString()) { alert(`Missing doc`); }
+      // if (!text) { alert(`Missing doc`); }
+      try {
+          // e.preventDefault();
+          // console.log('pud address:' + session.address);  // null
+          const [htmlDocs] = await session.privy.put(session.address, [
+            {
+              field: 'docs', // json (arr of doc objects)
+              value: JSON.stringify(generateDocsJson())
+            }
+          ])
+          setMsg('Doc saved!');
+          // setDocs(htmlDocs);
+          // .then(() => {console.log(address)});
+          setDocs(htmlDocs?.text());
+          console.log(htmlDocs?.text());
+          setTimeout(linktoHome, 1000); 
+        } catch(e) {
+          console.log(e);
         }
-      ])
-      setMsg('Doc saved!');
-      // setDocs(htmlDocs);
-      // .then(() => {console.log(address)});
-      setDocs(htmlDocs?.text());
-      console.log(htmlDocs?.text());      
-    } catch(e) {
-      console.log(e);
-    }
   };
 
   // const isDocsEmpty = docs.length == 0;
@@ -75,11 +84,12 @@ export default function Doc() {
     let docToSave = {
       'id': 1,
       'title': title,
-      'body': doc.toString()
+      'body': doc.toString(),
+      'rawContent': rawContent
     };  
     let res = new Array(docToSave);
     // console.log(docs.length); // string, 0 length
-      if (!docs.length == 0) {          
+      if (!docs?.length == 0) {          
           const savedDocs = JSON.parse(docs);
           docToSave.id = savedDocs.length + 1
           res = [...savedDocs, docToSave];
@@ -89,7 +99,7 @@ export default function Doc() {
   }
 
   // Temp
-  const handleDeleteDoc = async () => {
+  const onDeleteDoc = async () => {
     // const [htmlNote] = await session.privy.put(session.address, [
     //   {
     //     field: "html-note",
@@ -115,7 +125,8 @@ export default function Doc() {
       //   router.push('/login');
       // }
     setAddress(address);
-    console.log(doc);
+    // console.log(doc);
+    console.log(JSON.stringify(editorState));
 }, []);
 
   // Update address if page is refreshed.
@@ -249,10 +260,10 @@ export default function Doc() {
         <h1 className={styles.title}>
           Privy &middot; Docs
         </h1> */}
-
-        <SignOutLink />
+{/* style={{top: '-25rem !important'} */}
+        <SignOutButton className={'signOutBtn'} view={'editor'} />
         
-        <SimpleEditor style={{clear: 'both'}} doc={doc} setDoc={setDoc} title={title} setTitle={setTitle} editorState={editorState} setEditorState={setEditorState} />
+        <SimpleEditor style={{clear: 'both'}} doc={doc} setDoc={setDoc} docs={docs} title={title} setTitle={setTitle} editorState={editorState} setEditorState={setEditorState} setRawContent={setRawContent} />
 
         {/* <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -292,14 +303,17 @@ export default function Doc() {
       {/* <button onClick={() => {connectToWallet(session, setAddress)}}>Connect Wallet</button> */}
       {/* <button onClick={() => {disconnectWallet(session, setAddress, useSession, destroy)}}>Log out</button> */}
       <button onClick={linktoHome}>🏠 Home</button>      &nbsp;&nbsp;&nbsp;  
-      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={handleSaveDoc}>
+      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={onSaveDoc}>
               <strong>💾 </strong>&nbsp; Save Doc
             </button>      &nbsp;&nbsp;&nbsp;
-      <button className={Object.assign({}, styles.button, styles.inlineBtn)} onClick={handleDeleteDoc}>
+      <button className={Object.assign({}, styles.button, styles.inlineBtn)} onClick={onDeleteDoc}>
               <strong>🗑 </strong>&nbsp; Delete Doc
             </button>      &nbsp;&nbsp;&nbsp;          
-      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={linkToDocs}>
+      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={linktoHome}>
         <strong>📚 </strong> View Docs
+      </button>      &nbsp;&nbsp;&nbsp;
+      <button className={Object.assign({}, styles.button, styles.saveNote)} onClick={onShareDoc}>
+        <strong>📲 </strong>&nbsp; Share
       </button>  
         <h5>{msg}</h5>
         {/* <a

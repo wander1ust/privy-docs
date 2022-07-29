@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useState, useEffect, useContext } from 'react';
 
 export default function Docs({ docs }) {
     // ToDo: Refactor code - move to Layout

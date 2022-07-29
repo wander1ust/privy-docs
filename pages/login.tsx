@@ -15,14 +15,16 @@ export async function getStaticProps() {
 function SignIn() {
   const router = useRouter();
   const session = useSession();
+  const [unlocked, setUnlocked] = useState(false);
   const [address, setAddress] = useState(null);
 
    function onSubmit() {
     async function onSuccess() {
-      // console.log(session._address);
-      setAddress(session._address);
-      console.log(session._address);
-      router.push("/");
+      // ToDo: Change text effect
+      setUnlocked(true);
+      setTimeout(() => {
+        router.push("/");
+    }, 3000);
     }
 
     function onFailure(error: Error) {
@@ -35,7 +37,7 @@ function SignIn() {
   return (
     <>
     {/* <h2 style={{display: 'absolute'}}>Privy Docs</h2> */}
-    <Login onSubmit={onSubmit} />
+    <Login onSubmit={onSubmit} unlocked={unlocked} />
     </>
   );
 }

@@ -3,6 +3,7 @@
 :root {
   --font-title: Pangolin;
   --text-large: 4rem;
+  --text-medium: 2rem;
   --color-primary-dk: hotpink;
   --color-primary-lt: rgb(247, 206, 227);
 }
@@ -33,14 +34,27 @@ button {
   border-radius: 0.5em;
   padding: .3em .5em;
   font-family: Pangolin, Arial, sans-serif;
+  /* margin-top:-25rem; */
 }
 button:hover {
   cursor: pointer;
   /* cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🦊</text></svg>") 16 0,auto; */
    /*!emojicursor.app*/
 }
+
+button#sign-out {
+  display: block;
+  float: right;
+  position: absolute;
+  right: 5rem;
+  top: -5rem; 
+} 
+/* .signOutBtnHome {
+  top: -25rem;
+} */
+
 .textGradientPink {
-  color: #fff;
+  color: rgb(77, 50, 50);
   /*   background: linear-gradient(to right, lightpink 0%, hotpink); */
   background-image: radial-gradient(lightpink, hotpink);
   -webkit-background-clip: text;
